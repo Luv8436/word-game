@@ -1,0 +1,30 @@
+*{
+    box-sizing: border-box;
+}
+
+.title{
+    text-align: center;
+}
+.line{
+    border: solid black 1px;
+}
+
+.game-box{
+    text-align: center;
+}
+
+.input-box{
+    width: 40px;
+    height: 40px;
+    font-size: x-large;
+    font-weight: bold;
+    padding: 7px;
+    margin: 8px;
+    border: 3px solid rgb(207, 199, 207);
+    text-align: center;
+}
+
+.spinner{
+    height: 40px;
+    font-size: xx-large;
+}
