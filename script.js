@@ -172,7 +172,21 @@ async function checkValidWord(word){
 function highLightLetters(wordOfDay){
     let boxes = getBoxes();
     let wordOfDayFreq = getWordOfDayFreq(wordOfDay);
+    let colored = [];
     boxes.forEach( (box , index) => {
+        let letter = box.value.toLowerCase();
+        if(letter in wordOfDayFreq && wordOfDayFreq[letter]>0 && letter===wordOfDay[index] ){
+            changeColour(box , 'green')
+            colored[index] = true
+            wordOfDayFreq[letter] -= 1;
+        }else{
+            colored[index] = false;
+        }
+    } )
+    boxes.forEach( (box , index) => {
+        if(colored[index]){
+            return;
+        }
         let letter = box.value.toLowerCase();
         if(letter in wordOfDayFreq && wordOfDayFreq[letter]>0 ){
             if(letter===wordOfDay[index]){
