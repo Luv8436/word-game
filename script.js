@@ -3,10 +3,14 @@ function isLetter(letter){
     return /^[a-zA-Z]$/.test(letter);
 }
 
+let isWin = false;
 // add event listener when key is pressed
 async function init(){
 
     document.addEventListener('keydown' , function handleKeyPress(event){
+        if(isWin){
+            return ;
+        }
         let key = event.key;
         if(key=== 'Enter'){
             // checking the word
@@ -100,15 +104,19 @@ async function checkWord(){
     let isValidWord = await checkValidWord(word);
     if(isValidWord==false ){
         console.log("not valid word")
-        changeBorderRed();
+        await changeBorderRed();
         return ;
     }
 
     let wordOfDay = await getWordOfDay();
-    let validation = word===wordOfDay;
+    let validation = word.toLowerCase()===wordOfDay.toLowerCase();
     if(validation==true){
         // if the word is true -> you win
+        isWin = true;
+        highLightLetters(wordOfDay);
         celebrateWin();
+
+        return ;
     }else{
         // highlight letters
         highLightLetters(wordOfDay);
@@ -120,26 +128,31 @@ async function checkWord(){
     }
 }
 
-function changeBorderRed(){
+function celebrateWin(){
+    let titles = document.querySelectorAll(".title-word")
+    titles[0].className = "title-word title-word-1"
+    titles[1].className = "title-word title-word-2"
+    alert('You won')
+}
+
+async function celebrateLoose(){
+    let wordOfDay = await getWordOfDay();
+    alert('You Loose, word is '+ wordOfDay)
+}
+
+async function changeBorderRed(){
     let boxes = getBoxes();
     console.log("changing to red")
-
-    let opacity = 1;
-    setInterval(function(){
-        console.log('inside set interval')
+    
+    setTimeout(function(){
         boxes.forEach(box => {
-            box.style.borderColor = "rgba(255, 0, 0,"+opacity+")";
+            box.style.borderColor = 'rgb(207, 199, 207)';
         })
-        opacity = opacity/2;
-    } , 100);
+    } , 1000);
     
-
-    // setTimeout(function(){
-    //     boxes.forEach(box => {
-    //         box.style.borderColor = 'rgb(207, 199, 207)';
-    //     })
-    // } , 2000);
-    
+    boxes.forEach(box => {
+        box.style.borderColor = "rgb(255, 0, 0)";
+    })
 }
 
 async function checkValidWord(word){
@@ -202,6 +215,11 @@ async function getWordOfDay(){
 
     return wordOfDay;
 }
+
+
+// document.querySelectorAll(".input-box").addEventListener("input" , function(event){
+//     event.preventDefault;
+// })
 
 init();
 
